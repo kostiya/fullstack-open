@@ -7,7 +7,7 @@ server gets note and
 adds note to notes list
 end note
 
-server-->browser: Code-302 HTTP Redirect
+server-->browser: Code-302 HTTP Redirect exampleapp/notes
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
 server-->browser: HTML-code
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css

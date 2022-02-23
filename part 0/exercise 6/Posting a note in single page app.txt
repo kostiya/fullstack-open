@@ -1,0 +1,18 @@
+title Posting a note in single page app
+
+note over browser:
+browser adds note
+as an element to html 
+unordered list of
+notes and redraws
+the list.
+end note
+
+browser->server: HTTP POST-new note https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server: 
+server adds the note
+to the note list.
+end note
+
+server-->browser: Code-201 HTTP Create
