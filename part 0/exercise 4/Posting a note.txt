@@ -3,8 +3,8 @@ title Posting a note
 browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
 
 note over server: 
-server adds 
-note to notes list
+server gets note and
+adds note to notes list
 end note
 
 server-->browser: Code-302 HTTP Redirect
@@ -27,5 +27,3 @@ note over browser:
 browser executes the event handler
 that renders notes to display
 end note
-
-
