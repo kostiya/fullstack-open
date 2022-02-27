@@ -25,7 +25,7 @@ const App = () => {
 
   const getTotal = () => good + neutral + bad
   const getAverage = () => (good - bad)/getTotal()
-  const getPositivePercentage = () => good/getTotal()
+  const getPositivePercentage = () => good*100/getTotal()
 
   return (
     <div>
