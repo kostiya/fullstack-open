@@ -5,9 +5,10 @@ const Button = ({feedbackType, feedbackFunc, feedbackCount}) => (
 )
 
 const StatisticLine = ({statisticType, statisticCount}) => (
-  <>
-  {statisticType} {statisticCount} <br />
-  </>
+  <tr>
+    <td>{statisticType}</td>
+    <td>{statisticCount}</td>
+  </tr>
 )
 
 const Statistics = ({good, neutral, bad}) => {
@@ -23,14 +24,14 @@ const Statistics = ({good, neutral, bad}) => {
     )
   } else {
   return(
-    <>
+    <table>
       <StatisticLine statisticType={'good'} statisticCount={good} />
       <StatisticLine statisticType={'neutral'} statisticCount={neutral} />
       <StatisticLine statisticType={'bad'} statisticCount={bad} />
       <StatisticLine statisticType={'all'} statisticCount={getTotal()} />
       <StatisticLine statisticType={'average'} statisticCount={getAverage()} />
       <StatisticLine statisticType={'positive'} statisticCount={getPositivePercentage() + '%'} />
-    </>
+    </table>
     )
   }
 }
