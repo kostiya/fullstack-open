@@ -1,5 +1,15 @@
 import { useState } from 'react'
 
+const Button = ({feedbackType, feedbackFunc, feedbackCount}) => (
+    <button onClick={() => feedbackFunc(feedbackCount + 1)}>{feedbackType}</button>
+)
+
+const StatisticLine = ({statisticType, statisticCount}) => (
+  <>
+  {statisticType} {statisticCount} <br />
+  </>
+)
+
 const Statistics = ({good, neutral, bad}) => {
   const getTotal = () => good + neutral + bad
   const getAverage = () => (good - bad)/getTotal()
@@ -14,12 +24,12 @@ const Statistics = ({good, neutral, bad}) => {
   } else {
   return(
     <>
-      good {good} <br />
-      neutral {neutral} <br />
-      bad {bad} <br />
-      all {getTotal()} <br />
-      average {getAverage()} <br />
-      positive {getPositivePercentage()} % <br />
+      <StatisticLine statisticType={'good'} statisticCount={good} />
+      <StatisticLine statisticType={'neutral'} statisticCount={neutral} />
+      <StatisticLine statisticType={'bad'} statisticCount={bad} />
+      <StatisticLine statisticType={'all'} statisticCount={getTotal()} />
+      <StatisticLine statisticType={'average'} statisticCount={getAverage()} />
+      <StatisticLine statisticType={'positive'} statisticCount={getPositivePercentage() + '%'} />
     </>
     )
   }
@@ -31,29 +41,12 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const increace = (feedbackType) => {
-    switch(feedbackType){
-      case 'good' : 
-      return(
-        () => setGood(good + 1)
-      )
-      case 'neutral' : 
-      return(
-        () => setNeutral(neutral + 1)
-      )
-      case 'bad' : 
-      return(
-        () => setBad(bad + 1)
-      )
-    }
-  }
-
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={increace('good')}>good</button>
-      <button onClick={increace('neutral')}>neutral</button>
-      <button onClick={increace('bad')}>bad</button>
+      <Button feedbackType='good' feedbackFunc={setGood} feedbackCount={good} />
+      <Button feedbackType='neutral' feedbackFunc={setNeutral} feedbackCount={neutral} />
+      <Button feedbackType='bad' feedbackFunc={setBad} feedbackCount={bad} />
 
       <h2>statistics</h2>
 
