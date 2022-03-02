@@ -12,6 +12,19 @@ const FindCountries = ({filter, setFilter}) => {
   )
 }
 
+const CountryInfo = ({country}) => (
+  <>
+  <h1>{country.name.common}</h1>
+  capital {country.capital[0]} <br/>
+  area {country.area}
+  <h3>languages</h3>
+  <ul>
+    {Object.keys(country.languages).map(key => <li key={key}>{country.languages[key]}</li> )}
+  </ul>
+  <div style={{ fontSize : '150px'}}>{country.flag}</div>
+  </>
+)
+
 function App() {
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState('')
@@ -41,7 +54,11 @@ function App() {
       <FindCountries filter={filter} setFilter={setFilter} />
       <table>
         <tbody>
-          {filteredCountries.map((country) => <tr><td key={country.name.common}>{country.name.common}</td></tr>)}
+          {filteredCountries.map((country) => 
+          <tr key={country.name.common}>
+            <td>{country.name.common}</td>
+            <td><button onClick={() => setFilter(country.name.common)}>show</button></td>
+          </tr>)}
         </tbody>
       </table>
     </>
@@ -61,15 +78,9 @@ function App() {
   return(
   <>
   <FindCountries filter={filter} setFilter={setFilter} />
-  <h1>{country.name.common}</h1>
-  capital {country.capital[0]} <br/>
-  area {country.area}
-  <h3>languages</h3>
-  <ul>
-    {Object.keys(country.languages).map(key => <li key={key}>{country.languages[key]}</li> )}
-  </ul>
-  <div style={{ fontSize : '150px'}}>{country.flag}</div>
-  </>)
+  <CountryInfo country={country} />
+  </>
+  )
 }
 
 export default App;
