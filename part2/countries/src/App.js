@@ -12,7 +12,21 @@ const FindCountries = ({filter, setFilter}) => {
   )
 }
 
-const CountryInfo = ({country}) => (
+const CountryInfo = ({country}) => {
+  const [temp, setTemp] = useState(0)
+  const [icon, setIcon] = useState('')
+  const [wind, setWind] = useState(0)
+  const api_key = process.env.REACT_APP_API_KEY
+  axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.latlng[0]}&lon=${country.latlng[1]}&appid=${api_key}&units=metric`)
+  .then(
+    (response) => {
+      const weatherData= response.data
+      setTemp(weatherData.main.temp)
+      setIcon(`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`)
+      setWind(weatherData.wind.speed)
+    }
+  )
+  return(
   <>
   <h1>{country.name.common}</h1>
   capital {country.capital[0]} <br/>
@@ -22,8 +36,12 @@ const CountryInfo = ({country}) => (
     {Object.keys(country.languages).map(key => <li key={key}>{country.languages[key]}</li> )}
   </ul>
   <div style={{ fontSize : '150px'}}>{country.flag}</div>
+  <h1>Weather in {country.capital[0]}</h1>
+  temprature {temp} Celcius<br />
+  <img src={icon} /><br/>
+  wind {wind} m/s<br/>
   </>
-)
+)}
 
 function App() {
   const [countries, setCountries] = useState([])
@@ -40,7 +58,6 @@ function App() {
   const filteredCountries = countries.filter(country => country.name.common.toLowerCase().includes(filter.toLowerCase()))
   
   if(filteredCountries.length > 10){
-    console.log('Over 10', filteredCountries)
     return(
     <>
     <FindCountries filter={filter} setFilter={setFilter} />
