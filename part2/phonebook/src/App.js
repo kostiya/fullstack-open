@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import {getPersons, postPerson} from './services/phonebook'
 
 const Filter = ({filter, setFilter}) => {
   const handleFilterChange = (event) => setFilter(event.target.value)
@@ -31,7 +32,7 @@ const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPer
       number : newNumber
     }
 
-    setPersons(persons.concat(newPerson))
+    postPerson(newPerson, setPersons, persons)
     setNewName('')
     setNewNumber('')
   }
@@ -76,8 +77,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+    getPersons(setPersons)
   }, [])
 
   return (
