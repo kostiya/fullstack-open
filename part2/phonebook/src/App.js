@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import {getPersons, postPerson,deletePerson} from './services/phonebook'
+import {getPersons, postPerson, deletePerson, putPerson} from './services/phonebook'
 
 const Filter = ({filter, setFilter}) => {
   const handleFilterChange = (event) => setFilter(event.target.value)
@@ -20,21 +20,25 @@ const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPer
 
   const addPerson = (event) => {
     event.preventDefault()
-    for (const person of persons){
-      if(newName === person.name){
-        window.alert(`${newName} is already added to phonebook`)
-        setNewName('')
-        return
-      }
-    }
     const newPerson = {
       name : newName,
       number : newNumber
+    }
+    for (const person of persons){
+      if(newName === person.name){
+        if(window.confirm(`${newName} is already added to phonebook.\n Replace older number with new one`)){
+          putPerson(person.id, newPerson, setPersons, persons)
+        }
+        setNewName('')
+        setNewNumber('')
+        return
+      }
     }
 
     postPerson(newPerson, setPersons, persons)
     setNewName('')
     setNewNumber('')
+    return
   }
 
   return(

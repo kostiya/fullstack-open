@@ -14,3 +14,8 @@ export const postPerson = (newPerson,setPersons,persons) => {
 export const deletePerson = (id, setPersons, persons) => {
     return axios.delete(`${baseURL}/${id}`).then(setPersons(persons.filter(person => person.id !== id)))
 }
+
+export const putPerson = (id, newPerson, setPersons, persons) => {
+    return axios.put(`${baseURL}/${id}`, newPerson)
+        .then(setPersons(persons.map(person => person.id === id ? newPerson : person)))
+}
