@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import {getPersons, postPerson} from './services/phonebook'
+import {getPersons, postPerson,deletePerson} from './services/phonebook'
 
 const Filter = ({filter, setFilter}) => {
   const handleFilterChange = (event) => setFilter(event.target.value)
@@ -55,7 +55,13 @@ const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPer
   )
 }
 
-const NumbersTable = ({persons,filter}) => (
+const NumbersTable = ({persons, setPersons, filter}) => {
+  const onDeleteClick = (id) =>(
+    () => {
+      return deletePerson(id, setPersons, persons)
+    }
+  )
+  return(
   <table>
     <tbody>
       {persons
@@ -65,10 +71,12 @@ const NumbersTable = ({persons,filter}) => (
         <tr key={person.name}>
           <td>{person.name}</td>
           <td>{person.number}</td>
+          <td><button onClick={onDeleteClick(person.id)}>delete</button></td>
         </tr>)}
     </tbody>
   </table>
-)
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -92,7 +100,7 @@ const App = () => {
                     persons={persons}
                     setPersons={setPersons} />
       <h2>Numbers</h2>
-      <NumbersTable persons={persons} filter={filter} />
+      <NumbersTable persons={persons} setPersons={setPersons} filter={filter} />
     </div>
   )
 }

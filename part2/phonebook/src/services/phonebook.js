@@ -10,3 +10,7 @@ export const postPerson = (newPerson,setPersons,persons) => {
     return axios.post(baseURL,newPerson).then(setPersons(persons.concat(newPerson))
     )
 }
+
+export const deletePerson = (id, setPersons, persons) => {
+    return axios.delete(`${baseURL}/${id}`).then(setPersons(persons.filter(person => person.id !== id)))
+}
