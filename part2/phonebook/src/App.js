@@ -56,9 +56,12 @@ const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPer
 }
 
 const NumbersTable = ({persons, setPersons, filter}) => {
-  const onDeleteClick = (id) =>(
+  const onDeleteClick = (person) =>(
     () => {
-      return deletePerson(id, setPersons, persons)
+      if(window.confirm("Delete " + person.name + " ?")){
+          return deletePerson(person.id, setPersons, persons)
+      }
+      return
     }
   )
   return(
@@ -71,7 +74,7 @@ const NumbersTable = ({persons, setPersons, filter}) => {
         <tr key={person.name}>
           <td>{person.name}</td>
           <td>{person.number}</td>
-          <td><button onClick={onDeleteClick(person.id)}>delete</button></td>
+          <td><button onClick={onDeleteClick(person)}>delete</button></td>
         </tr>)}
     </tbody>
   </table>
