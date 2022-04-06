@@ -15,7 +15,7 @@ const Filter = ({filter, setFilter}) => {
   )
 }
 
-const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPersons,setAddedMessage}) => {
+const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPersons,setMessage,setMessageClass}) => {
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
 
@@ -27,12 +27,9 @@ const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPer
     }
     for (const person of persons){
       if(newName === person.name){
+        const personID = person.id
         if(window.confirm(`${newName} is already added to phonebook.\n Replace older number with new one`)){
-          putPerson(person.id, newPerson, setPersons, persons)
-          setAddedMessage("Updated " + newName + " number.")
-          setTimeout(() => {
-            setAddedMessage(null)
-          }, 5000)
+          putPerson(personID, newPerson, setPersons, persons, setMessage, setMessageClass)
         }
         setNewName('')
         setNewNumber('')
@@ -41,9 +38,10 @@ const AddPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPer
     }
 
     postPerson(newPerson, setPersons, persons)
-    setAddedMessage("Added " + newName + " to phonebook.")
+    setMessage("Added " + newName + " to phonebook.")
+    setMessageClass("addedPerson")
     setTimeout(() => {
-      setAddedMessage(null)
+      setMessage(null)
     }, 5000)
     
     setNewName('')
@@ -95,13 +93,13 @@ const NumbersTable = ({persons, setPersons, filter}) => {
   )
 }
 
-const Notification = ({message}) => {
+const Notification = ({message, messageClass}) => {
   if(message === null){
     return null
   }
 
   return(
-    <div className='addedPerson'>
+    <div className={messageClass}>
       {message}
     </div>
   )
@@ -112,7 +110,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-  const [message, setAddedMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [messageClass, setMessageClass] = useState(null)
 
   useEffect(() => {
     getPersons(setPersons)
@@ -121,7 +120,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message}/>
+      <Notification message={message} messageClass={messageClass}/>
       <Filter filter={filter} setFilter={setFilter} />
       <h2>Add new</h2>
       <AddPersonForm newName={newName} 
@@ -130,7 +129,8 @@ const App = () => {
                     setNewNumber={setNewNumber}
                     persons={persons}
                     setPersons={setPersons}
-                    setAddedMessage={setAddedMessage} />
+                    setMessage={setMessage}
+                    setMessageClass={setMessageClass} />
       <h2>Numbers</h2>
       <NumbersTable persons={persons} setPersons={setPersons} filter={filter} />
     </div>
