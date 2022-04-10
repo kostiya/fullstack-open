@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import {getPersons, postPerson, deletePerson, putPerson} from './services/phonebook'
 import "./index.css"
 

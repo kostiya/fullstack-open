@@ -1,5 +1,5 @@
 import axios from "axios"
-const baseURL = "http://localhost:3001/api/persons"
+const baseURL = "/api/persons"
 
 export const getPersons = (setPersons) => {
     return axios.get(baseURL).then(response => setPersons(response.data))
