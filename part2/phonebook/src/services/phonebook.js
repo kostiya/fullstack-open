@@ -5,8 +5,15 @@ export const getPersons = (setPersons) => {
     return axios.get(baseURL).then(response => setPersons(response.data))
 }
 
-export const postPerson = (newPerson,setPersons,persons) => {
-    return axios.post(baseURL,newPerson).then(response => setPersons(persons.concat(response.data))
+export const postPerson = (newPerson,setPersons,persons,setMessage,setMessageClass) => {
+    return axios.post(baseURL,newPerson).then(response => {
+            setPersons(persons.concat(response.data))
+            setMessageClass("addedPerson")
+            setMessage("Added " + newPerson.name)
+            setTimeout(() => {
+                setMessage(null)
+            }, 5000)
+        }
     )
 }
 

@@ -22,7 +22,7 @@ export default ({newName,setNewName,newNumber,setNewNumber,persons,setPersons,se
         }
       }
   
-      postPerson(newPerson, setPersons, persons)
+      postPerson(newPerson, setPersons, persons, setMessage, setMessageClass)
       setMessage("Added " + newName + " to phonebook.")
       setMessageClass("addedPerson")
       setTimeout(() => {
