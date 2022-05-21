@@ -15,6 +15,14 @@ export const postPerson = (newPerson,setPersons,persons,setMessage,setMessageCla
             }, 5000)
         }
     )
+    .catch(error => {
+        setMessageClass('error')
+        setMessage(error.response.data.error)
+        setTimeout(() => {
+            setMessage(null)
+        }, 5000)
+        return
+    })
 }
 
 export const deletePerson = (id, setPersons, persons) => {
@@ -34,13 +42,17 @@ export const putPerson = (id, newPerson, setPersons, persons, setMessage, setMes
     })
     )
     .catch(
-        () => {
-            setMessageClass("alreadyDeletedPerson")
-            setMessage("Information of " + newPerson.name + " has already been remooved from the server.")
+        error => {
+            setMessageClass("error")
+            if(error.response.status === 400){
+                setMessage(error.response.data.error)
+            } else {
+                setMessage("Information of " + newPerson.name + " has already been remooved from the server.")
+                setPersons(persons.filter(person => person.id !== id))
+            }
             setTimeout(() => {
                 setMessage(null)
             }, 5000)
-            setPersons(persons.filter(person => person.id !== id))
             return
     })
 }
