@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "The Self",
+    "author": "Menashe",
+    "url": "https://theself.wordpress.com/",
+    "likes": 100
+}
+###
+GET http://localhost:3003/api/blogs
