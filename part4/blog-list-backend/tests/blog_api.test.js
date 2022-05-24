@@ -24,6 +24,15 @@ test('correct number of blogs return', async () => {
         .toHaveLength(helper.initialBlogs.length)
 })
 
+test('blogs returned with id parameter', async () => {
+    const response = await api.get('/api/blogs')
+
+    response.body.forEach(blog => {
+        expect(blog.id).toBeDefined()
+        expect(blog._id).not.toBeDefined()
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
