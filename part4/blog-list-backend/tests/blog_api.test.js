@@ -77,6 +77,33 @@ test('blog without likes defaults to 0', async () => {
     expect(newBlogInDB.likes).toBe(0)
 })
 
+test('blog without author or url returns bad request', async () => {
+    const blogWithoutTitle = {
+        author: 'Menashe',
+        url: 'https://blog.wordpress.com/',
+        likes: 1
+    }
+
+    const blogWithoutURL = {
+        title: 'Some new intresting blog',
+        author: 'Menashe',
+        likes: 1
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blogWithoutTitle)
+        .expect(400)
+
+    await api
+        .post('/api/blogs')
+        .send(blogWithoutURL)
+        .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
