@@ -33,6 +33,29 @@ test('blogs returned with id parameter', async () => {
     })
 })
 
+test('blog can be added', async () => {
+    const newBlog = {
+        title: 'Some new intresting blog',
+        author: 'Menashe',
+        url: 'https://blog.wordpress.com/',
+        likes: 1
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+    const titles = blogsAtEnd.map(r => r.title)
+    expect(titles).toContain(
+        'Some new intresting blog'
+    )
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
