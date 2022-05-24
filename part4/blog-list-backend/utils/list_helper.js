@@ -4,7 +4,8 @@ const dummy = (blogs) => {
 }
 
 const totalLikes = (blogs) => {
-    return blogs.map(blog => blog.likes).reduce((sum, value) => sum + value, 0)
+    return blogs.map(blog => blog.likes)
+        .reduce((sum, value) => sum + value, 0)
 }
 
 const favoriteBlog = (blogs) => {
@@ -34,7 +35,8 @@ const mostBlogs = (blogs) => {
             counter[blog.author] = 1
         }
     })
-    const author = Object.keys(counter).reduce((a, b) => (counter[a] > counter[b]) ? a : b)
+    const author = Object.keys(counter)
+        .reduce((a, b) => (counter[a] > counter[b]) ? a : b)
     return {
         author: author,
         blogs: counter[author]
@@ -51,7 +53,8 @@ const mostLikes = (blogs) => {
             counter[blog.author] = blog.likes
         }
     })
-    const author = Object.keys(counter).reduce((a, b) => (counter[a] > counter[b]) ? a : b)
+    const author = Object.keys(counter)
+        .reduce((a, b) => (counter[a] > counter[b]) ? a : b)
     return {
         author: author,
         likes: counter[author]
