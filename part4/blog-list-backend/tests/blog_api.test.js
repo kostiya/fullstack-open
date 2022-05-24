@@ -142,6 +142,92 @@ describe('requesting delete of blog with', () => {
     })
 })
 
+describe('PUT', () => {
+    test('on existent and non existent but correct ID works', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const nonExistentId = await helper.nonExistingId()
+
+        const newBlog = {
+            title: 'Some new intresting blog',
+            author: 'Menashe',
+            url: 'https://blog.wordpress.com/',
+            likes: 1
+        }
+
+        const secontNewBlog = {
+            title: 'Some second new intresting blog',
+            author: 'Menashe',
+            url: 'https://blog.wordpress.com/',
+            likes: 10
+        }
+
+        await api
+            .put(`/api/blogs/${blogsAtStart[1].id}`)
+            .send(newBlog)
+            .expect(200)
+
+        await api
+            .put(`/api/blogs/${nonExistentId}`)
+            .send(secontNewBlog)
+            .expect(200)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+        const titles = blogsAtEnd.map(r => r.title)
+        expect(titles)
+            .toContain('Some new intresting blog')
+        expect(titles)
+            .not.toContain('Some second new intresting blog')
+    })
+
+    test('on sending blog without author or URL returns bad request', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogWithoutTitle = {
+            author: 'Menashe',
+            url: 'https://blog.wordpress.com/',
+            likes: 1
+        }
+
+        const blogWithoutURL = {
+            title: 'Some new intresting blog',
+            author: 'Menashe',
+            likes: 1
+        }
+
+        await api
+            .put(`/api/blogs/${blogsAtStart[1]}`)
+            .send(blogWithoutTitle)
+            .expect(400)
+
+        await api
+            .put(`/api/blogs/${blogsAtStart[1]}`)
+            .send(blogWithoutURL)
+            .expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('malformated id returnes 400 bad request', async () => {
+        const malformattedId = '12a6f3'
+
+        const newBlog = {
+            title: 'Some new intresting blog',
+            author: 'Menashe',
+            url: 'https://blog.wordpress.com/',
+            likes: 1
+        }
+
+        const badId = await api
+            .put(`/api/blogs/${malformattedId}`)
+            .send(newBlog)
+            .expect(400)
+
+        expect(badId.body.error).toBe('malformatted id')
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })

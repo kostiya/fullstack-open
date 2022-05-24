@@ -37,4 +37,28 @@ blogRouter.delete('/:id', async (request, response) => {
     response.status(204).end()
 })
 
+blogRouter.put('/:id', async (request, response) => {
+    const { title, author, url, likes } = request.body
+
+    if(!title || !url) {
+        return response.status(400).end()
+    }
+
+    try{
+        const updatedBlog = await Blog.findByIdAndUpdate(request.params.id,
+            { title, author, url, likes },
+            { new: true, runValidators: true, context: 'query' })
+        response.json(updatedBlog)
+    } catch(error) {
+        if(error.name === 'CastError'){
+            return response
+                .status(400)
+                .send({ error: 'malformatted id' })
+        } else {
+            return response
+                .status(500).end()
+        }
+    }
+})
+
 module.exports = blogRouter
