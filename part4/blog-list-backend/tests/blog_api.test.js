@@ -77,7 +77,7 @@ test('blog without likes defaults to 0', async () => {
     expect(newBlogInDB.likes).toBe(0)
 })
 
-test('blog without author or url returns bad request', async () => {
+test('sending blog without author or URL returns bad request', async () => {
     const blogWithoutTitle = {
         author: 'Menashe',
         url: 'https://blog.wordpress.com/',
@@ -102,6 +102,44 @@ test('blog without author or url returns bad request', async () => {
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+describe('requesting delete of blog with', () => {
+    test('malformated id returnes 400 bad request', async () => {
+        const malformattedId = '12a6f3'
+
+        const badId = await api
+            .delete(`/api/blogs/${malformattedId}`)
+            .expect(400)
+
+        expect(badId.body.error).toBe('malformatted id')
+    })
+
+    test('non existent id returnes 204 without changing DB', async () => {
+        const nonExistentId = await helper.nonExistingId()
+
+        await api
+            .delete(`/api/blogs/${nonExistentId}`)
+            .expect(204)
+
+        const blogsAfterinDb = await helper.blogsInDb()
+        expect(blogsAfterinDb).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('of existing blog works', async () => {
+        const blogsBeforeinDb = await helper.blogsInDb()
+        const deletedID = blogsBeforeinDb[0].id
+        await api
+            .delete(`/api/blogs/${deletedID}`)
+            .expect(204)
+
+        const blogsAfterinDb = await helper.blogsInDb()
+        expect(blogsAfterinDb)
+            .toHaveLength(helper.initialBlogs.length - 1)
+
+        expect(blogsAfterinDb.map(blog => blog.id)).not.toContain(deletedID)
+
+        expect(blogsAfterinDb).toHaveLength(helper.initialBlogs.length - 1)
+    })
 })
 
 afterAll(() => {
