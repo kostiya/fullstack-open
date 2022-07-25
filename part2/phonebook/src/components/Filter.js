@@ -1,4 +1,4 @@
-export default ({filter, setFilter}) => {
+const filter = ({filter, setFilter}) => {
     const handleFilterChange = (event) => setFilter(event.target.value)
     return(
     <div>
@@ -9,3 +9,5 @@ export default ({filter, setFilter}) => {
     </div>
     )
 }
+
+export default filter

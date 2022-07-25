@@ -1,6 +1,6 @@
 import { deletePerson } from '../services/phonebook'
 
-export default ({persons, setPersons, filter}) => {
+const numbersTable = ({persons, setPersons, filter}) => {
     const onDeleteClick = (person) =>(
       () => {
         if(window.confirm("Delete " + person.name + " ?")){
@@ -25,3 +25,5 @@ export default ({persons, setPersons, filter}) => {
     </table>
     )
 }
+
+export default numbersTable

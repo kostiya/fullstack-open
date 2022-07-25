@@ -1,4 +1,4 @@
-export default ({message, messageClass}) => {
+const notificaton =  ({message, messageClass}) => {
     if(message === null){
       return null
     }
@@ -9,3 +9,5 @@ export default ({message, messageClass}) => {
       </div>
     )
 }
+
+export default notificaton

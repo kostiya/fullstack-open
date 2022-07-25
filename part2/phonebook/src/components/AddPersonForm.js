@@ -1,6 +1,6 @@
 import {postPerson, putPerson} from '../services/phonebook'
 
-export default ({newName,setNewName,newNumber,setNewNumber,persons,setPersons,setMessage,setMessageClass}) => {
+const addPersonForm = ({newName,setNewName,newNumber,setNewNumber,persons,setPersons,setMessage,setMessageClass}) => {
     const handleNameChange = (event) => setNewName(event.target.value)
     const handleNumberChange = (event) => setNewNumber(event.target.value)
   
@@ -51,3 +51,4 @@ export default ({newName,setNewName,newNumber,setNewNumber,persons,setPersons,se
       </form>
     )
 }
+export default addPersonForm
