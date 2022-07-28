@@ -4,15 +4,17 @@
   "description": "A blog list app",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node ./index.js",
-    "test": "NODE_ENV=test jest --verbose --runInBand --forceExit",
-    "dev": "NODE_ENV=development nodemon ./index.js"
+    "start": "cross-env NODE_ENV=production node ./index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
+    "dev": "cross-env NODE_ENV=development nodemon ./index.js"
   },
   "author": "Kosta",
   "license": "MIT",
   "dependencies": {
+    "@types/jest": "^28.1.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongoose": "^6.3.4",

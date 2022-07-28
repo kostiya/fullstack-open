@@ -138,7 +138,7 @@ describe('requesting delete of blog with', () => {
 
         expect(blogsAfterinDb.map(blog => blog.id)).not.toContain(deletedID)
 
-        expect(blogsAfterinDb).toHaveLength(helper.initialBlogs.length - 1)
+        expect(blogsAfterinDb.map(blog => blog.title)).not.toContain(blogsBeforeinDb[0].title)
     })
 })
 
